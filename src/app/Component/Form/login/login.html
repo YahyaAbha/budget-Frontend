@@ -22,7 +22,7 @@
           @if (email?.hasError('required') && (email?.dirty || email?.touched)) {
             <p class="flex items-center gap-1">⚠ Email is Required</p>
           }
-          @if (email?.invalid && !email?.hasError('required') && (email?.dirty || email?.touched)) {
+          @if (email?.invalid && !email.hasError('required') && (email.dirty || email.touched)) {
             <p class="flex items-center gap-1">⚠ Provide enter valid email</p>
           }
         </div>
@@ -51,8 +51,8 @@
           }
           @if (
             password?.invalid &&
-            !password?.hasError('required') &&
-            (password?.dirty || password?.touched)
+            !password.hasError('required') &&
+            (password.dirty || password.touched)
           ) {
             <p class="flex items-center gap-1">⚠ Provide enter valid password</p>
           }
