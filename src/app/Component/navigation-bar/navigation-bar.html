@@ -1,0 +1,44 @@
+<nav
+  class="bg-white border-b border-slate-100 px-6 py-4 flex justify-between items-center shadow-sm"
+>
+  <div class="flex items-center gap-2">
+    <span
+      class="text-xl font-bold bg-linear-to-r from-violet-600 to-indigo-600 bg-clip-text text-transparent"
+    >
+      BudgetWeb
+    </span>
+  </div>
+
+  <div class="flex items-center gap-4">
+    <div class="flex items-center gap-2 border-r border-slate-200 pr-4">
+      <div
+        class="w-8 h-8 rounded-full bg-violet-100 flex items-center justify-center text-sm font-semibold text-violet-600"
+      >
+        U
+      </div>
+      <span class="text-sm font-medium text-slate-700 hidden sm:inline">{{ userName }}</span>
+    </div>
+
+    <button
+      (click)="logout()"
+      type="button"
+      class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-semibold text-slate-600 hover:text-red-600 hover:bg-red-50 transition-all duration-200 active:scale-95"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke-width="2"
+        stroke="currentColor"
+        class="w-4 h-4"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15M12 9l-3 3m0 0 3 3m-3-3h12.75"
+        />
+      </svg>
+      Logout
+    </button>
+  </div>
+</nav>

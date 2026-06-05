@@ -1,0 +1,172 @@
+<app-navigation-bar />
+<main class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-8">
+  <section class="dashboard-summary mb-12">
+    <h2 class="text-3xl font-bold text-gray-800 mb-8">Dashboard Overview</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div
+        class="bg-white rounded-lg shadow-lg p-6 hover:shadow-xl transition-shadow relative group"
+      >
+        <div class="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
+          <button
+            (click)="openIncomeEditModal()"
+            class="bg-blue-500 text-white p-2 rounded-full hover:bg-blue-600 transition-colors"
+          >
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+              ></path>
+            </svg>
+          </button>
+        </div>
+        <h3 class="text-lg font-semibold text-gray-600 mb-2">Your Income</h3>
+        <p class="text-4xl font-bold text-green-600">${{ income() | number:'1.2-2' }}</p>
+        <div class="mt-4 text-sm text-gray-500">+5% from last month</div>
+      </div>
+
+      <div class="bg-white rounded-lg shadow-lg p-6 hover:shadow-xl transition-shadow">
+        <h3 class="text-lg font-semibold text-gray-600 mb-2">Your Balance</h3>
+        <p class="text-4xl font-bold text-blue-600">${{ balance() | number:'1.2-2' }}</p>
+        <div class="mt-4 text-sm text-gray-500">Total available funds</div>
+      </div>
+
+      <div class="bg-white rounded-lg shadow-lg p-6 hover:shadow-xl transition-shadow">
+        <h3 class="text-lg font-semibold text-gray-600 mb-2">Your Expenses</h3>
+        <p class="text-4xl font-bold text-red-600">${{ expense() | number:'1.2-2' }}</p>
+        <div class="mt-4 text-sm text-gray-500">This month's spending</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="expense-tracker mb-12">
+    <h2 class="text-3xl font-bold text-gray-800 mb-8">Expense Tracker</h2>
+
+    <div class="bg-white rounded-lg shadow-lg p-6 max-h-[165px] overflow-y-auto custom-scrollbar">
+      <div class="space-y-4">
+        @for (item of allTransactions(); track item?.id) {
+          <div
+            class="flex items-center justify-between bg-gradient-to-r from-blue-50 to-indigo-50 p-4 rounded-lg border border-gray-200 hover:border-indigo-400 transition-all"
+          >
+            <div class="flex-1">
+              <h4 class="font-semibold text-gray-800">
+                {{ item.title }}
+              </h4>
+              <p [class]="item.type === 'income' ? 'text-green-600 font-bold text-lg mt-1' : 'text-red-600 font-bold text-lg mt-1'">
+                ${{ item.amount }}
+              </p>
+              <small class="text-gray-400">
+                {{ item.date | date: 'shortDate' }}
+              </small>
+            </div>
+
+            <div class="flex gap-3">
+              <button
+                (click)="editBudget(item.id)"
+                class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors flex items-center gap-2"
+              >
+                Edit
+              </button>
+              <button
+                (click)="deleteBudget(item.id)"
+                class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition-colors flex items-center gap-2"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        } @empty {
+          <p class="text-gray-500 text-center py-4">No transactions found.</p>
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="budget-form mb-12">
+    <h2 class="text-3xl font-bold text-gray-800 mb-8">Add New Budget</h2>
+    <div class="bg-white rounded-lg shadow-lg p-8">
+      <form [formGroup]="editTransaction" class="space-y-6">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+          <div>
+            <label class="block text-gray-700 font-semibold mb-2">Expense Name</label>
+            <input
+              name="expenseName"
+              formControlName="title"
+              type="text"
+              placeholder="e.g., Groceries, Utilities"
+              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+            />
+          </div>
+
+          <div>
+            <label class="block text-gray-700 font-semibold mb-2">Budget Amount</label>
+            <input
+              name="budgetAmount"
+              type="number"
+              formControlName="amount"
+              placeholder="e.g., 500"
+              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+            />
+          </div>
+
+          <div>
+            <label class="block text-gray-700 font-semibold mb-2">Transaction Type</label>
+            <div class="relative">
+              <select
+                formControlName="type"
+                class="w-full px-4 py-3 border border-gray-300 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all appearance-none cursor-pointer text-gray-700"
+              >
+                <option value="" disabled selected>Select Type</option>
+                <option value="income" class="text-green-600 font-medium">Income</option>
+                <option value="expense" class="text-red-600 font-medium">Expense</option>
+              </select>
+
+              <div
+                class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-500"
+              >
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M19 9l-7 7-7-7"
+                  ></path>
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-gray-700 font-semibold mb-2">Date</label>
+            <input
+              type="date"
+              formControlName="date"
+              class="w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all cursor-pointer"
+            />
+          </div>
+        </div>
+
+        <div class="flex justify-end">
+          <button
+            type="button"
+            (click)="addBudget()"
+            class="bg-gradient-to-r from-blue-500 to-indigo-600 text-white font-bold px-8 py-3 rounded-lg hover:from-blue-600 hover:to-indigo-700 transition-all shadow-md hover:shadow-lg transform hover:scale-105 transition-transform"
+          >
+            <span class="flex items-center gap-2">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M12 4v16m8-8H4"
+                ></path>
+              </svg>
+              {{ edit ? 'Update Budget' : 'Add Budget' }}
+            </span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </section>
+</main>
