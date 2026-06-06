@@ -7,9 +7,7 @@
 
     <form [formGroup]="profileForm" (ngSubmit)="handleForm()" class="space-y-5">
       <section class="relative pb-5">
-        <label for="email" class="block text-sm font-semibold text-slate-700 mb-2"
-          >Email Address</label
-        >
+        <label for="email" class="block text-sm font-semibold text-slate-700 mb-2">Email Address</label>
         <input
           type="email"
           id="email"
@@ -19,10 +17,10 @@
         />
 
         <div class="absolute bottom-0 left-0 text-xs font-medium text-red-500">
-          @if (email?.hasError('required') && (email?.dirty || email?.touched)) {
+          @if (email.hasError('required') && (email.dirty || email.touched)) {
             <p class="flex items-center gap-1">⚠ Email is Required</p>
           }
-          @if (email?.invalid && !email.hasError('required') && (email.dirty || email.touched)) {
+          @if (email.invalid && !email.hasError('required') && (email.dirty || email.touched)) {
             <p class="flex items-center gap-1">⚠ Provide enter valid email</p>
           }
         </div>
@@ -46,11 +44,11 @@
         />
 
         <div class="absolute bottom-0 left-0 text-xs font-medium text-red-500">
-          @if (password?.hasError('required') && (password?.dirty || password?.touched)) {
+          @if (password.hasError('required') && (password.dirty || password.touched)) {
             <p class="flex items-center gap-1">⚠ Password is Required</p>
           }
           @if (
-            password?.invalid &&
+            password.invalid &&
             !password.hasError('required') &&
             (password.dirty || password.touched)
           ) {

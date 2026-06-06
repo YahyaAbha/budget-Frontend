@@ -26,11 +26,12 @@ export class Login {
     ]),
   });
 
+  // Fixed: Type assertion laga di taake compiler ko pata ho yeh null nahi hain
   get password() {
-    return this.profileForm.get('password');
+    return this.profileForm.get('password') as FormControl;
   }
   get email() {
-    return this.profileForm.get('email');
+    return this.profileForm.get('email') as FormControl;
   }
 
   handleForm() {
@@ -43,7 +44,6 @@ export class Login {
           localStorage.setItem('user', JSON.stringify(response.user));
 
           this.ngZone.run(async () => {
-            // pehle /home se door jao phir wapas jao — component dobara initialize hoga
             await this.router.navigateByUrl('/', { skipLocationChange: true });
             await this.router.navigate(['/home']);
           });
